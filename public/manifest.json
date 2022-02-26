@@ -1,25 +1,24 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
-  "icons": [
-    {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
-    },
-    {
-      "src": "logo192.png",
-      "type": "image/png",
-      "sizes": "192x192"
-    },
-    {
-      "src": "logo512.png",
-      "type": "image/png",
-      "sizes": "512x512"
-    }
+  "version": "2",
+  "short_name": "H/L price goods",
+  "name": "Highest / Lowest price goods",
+  "manifest_version": 3,
+  "description": "Display the highest price goods and lowest price goods on the current page",
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png"
+  },
+  "permissions": [
   ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "css": [
+        "static/css/main.e6c13ad2.css"
+      ],
+      "js": [
+        "static/js/main.7318a0a8.js"
+      ]
+    }
+  ]
 }

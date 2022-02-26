@@ -1,8 +1,9 @@
+import './App.css'
 import {AspectRatio, Box, Flex, HStack, Image, Stack, Text} from "@chakra-ui/react";
 
 function App() {
   return (
-    <Box position={"fixed"} left={0} top={0} h={'100vh'} w={'100vw'} bg={'rgba(0,0,0,.2)'} onClick={handleModalClicked}>
+    <Box className='App' zIndex={9999} position={"fixed"} left={0} top={0} h={'100vh'} w={'100vw'} bg={'rgba(0,0,0,.2)'} onClick={handleModalClicked}>
       <Box
         onClick={(e) => e.stopPropagation()}
         overflowY={"auto"}
@@ -23,6 +24,7 @@ function App() {
         <Title>详情</Title>
         <ProductInfo
           label={'本页产品中价格最高的产品'}
+          mb={'30px'}
         />
         <ProductInfo
           label={'本页产品中价格最低的产品'}
@@ -44,7 +46,7 @@ function Field(props) {
 
 function Title(props) {
   return (
-    <Text m={0} fontSize={'26px'} fontWeight={'bold'}>{props.children}</Text>
+    <Text mb={'20px'} fontSize={'26px'} fontWeight={'bold'}>{props.children}</Text>
   )
 }
 
@@ -53,17 +55,18 @@ function ProductInfo(props) {
     label,
     title = '-',
     price = '-',
-    src
+    src,
+    ...rest
   } = props;
   return (
-    <Box>
-      <Text>{label}</Text>
+    <Box {...rest}>
+      <Text mb={'10px'}>{label}</Text>
       <Flex border={'1px solid #232323'}>
         <AspectRatio w={'150px'} ratio={0.6}>
           <Image src={src} w={'100%'} h={'100%'} fit={'cover'} />
         </AspectRatio>
         <Box px={'20px'}>
-          <Text>{title}</Text>
+          <Text fontSize={'20px'} fontWeight={'bold'} my={'20px'}>{title}</Text>
           <HStack>
             <Text>Price(USD)</Text>
             <Text>${price}</Text>
