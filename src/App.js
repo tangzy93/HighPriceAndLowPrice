@@ -12,7 +12,7 @@ function App() {
   }, []);
   useEffect(() => {
     if (visible) {
-      const moneyDom = document.querySelectorAll('.money');
+      const moneyDom = document.querySelectorAll('.product-tile__price .money');
       setProductsCount(moneyDom.length);
     }
   }, [visible])
