@@ -1,10 +1,10 @@
 import './App.css'
 import {AspectRatio, Box, Flex, HStack, Image, Stack, Text} from "@chakra-ui/react";
-import {useEffect, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import $ from 'jquery';
 import _ from 'lodash';
 const defaultPriceInfo = {
-  price: '-',
+  price: 0,
   title: '-',
   src: '-'
 }
@@ -13,13 +13,8 @@ function App() {
   const [productsCount, setProductsCount] = useState(0);
   const [maxPriceInfo, setMaxPriceInfo] = useState(defaultPriceInfo);
   const [minPriceInfo, setMinPriceInfo] = useState(defaultPriceInfo);
-  useEffect(() => {
-    window.openHLInfo = () => setVisible(true);
-    window.closeHLInfo = () => setVisible(false)
-    window.toggleHLInfo = () => setVisible(prev => !prev);
-  }, []);
-  useEffect(() => {
-    if (visible) {
+  const computedData = useMemo(() => _.throttle((_visible) => {
+    if (_visible) {
       const $products = $('[data-pdp-json]').map((index, item) => {
         try {
           const data = JSON.parse($(item).data().pdpJson);
@@ -40,20 +35,31 @@ function App() {
           title: '',
           src: ''
         }
-      }).sort((a, b) => {
-        return a.price - b.price > 0
       });
-      const sortedArr = $products.filter((index, item) => {
-        return item.price !== 0
-      }).sort((a, b) => a.price - b.price > 0);
-      const _maxPriceInfo = _.head(sortedArr);
-      const _minPriceInfo = _.last(sortedArr);
+      const sortedArr = _.orderBy($products, ['price'], ['desc']);
+      const _maxPriceInfo = _.head(sortedArr) || defaultPriceInfo;
+      const _minPriceInfo = _.last(sortedArr) || defaultPriceInfo;
       setMaxPriceInfo(_maxPriceInfo);
       setMinPriceInfo(_minPriceInfo);
       setProductsCount($products.length);
     }
+  }, 500), []);
+  useEffect(() => {
+    window.openHLInfo = () => setVisible(true);
+    window.closeHLInfo = () => setVisible(false)
+    window.toggleHLInfo = () => setVisible(prev => !prev);
+    function handleScroll () {
+      computedData(true)
+    }
+    window.addEventListener('scroll', handleScroll, false)
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, []);
+  useEffect(() => {
+    computedData(visible)
   }, [visible])
-  return visible ? <Box className='App' zIndex={9999} position={"fixed"} left={0} top={0} h={'100vh'} w={'100vw'} bg={'rgba(0,0,0,.2)'} onClick={handleModalClicked}>
+  return visible ? <Box className='App' zIndex={10000} position={"fixed"} left={0} top={0} h={'100vh'} w={'100vw'} bg={'rgba(0,0,0,.2)'} onClick={handleModalClicked}>
     <Box
       onClick={(e) => e.stopPropagation()}
       overflowY={"auto"}
@@ -133,6 +139,8 @@ function ProductInfo(props) {
 }
 
 function handleModalClicked() {
-  console.log('clicked modal')
+  if (typeof window.closeHLInfo === 'function') {
+    window.closeHLInfo();
+  }
 }
 export default App;

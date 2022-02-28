@@ -660,7 +660,7 @@ module.exports = function (webpackEnv) {
           const cssEntry = entrypointFiles.filter(item => item.endsWith('.css'))
           const jsEntry = entrypointFiles.filter(item => item.endsWith('.js'))
           return {
-            "version": "2",
+            "version": "1",
             "short_name": "H/L price goods",
             "name": "Highest / Lowest price goods",
             "manifest_version": 2,
