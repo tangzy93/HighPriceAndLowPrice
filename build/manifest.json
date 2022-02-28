@@ -1,0 +1,49 @@
+{
+  "version": "1",
+  "short_name": "H/L price goods",
+  "name": "Highest / Lowest price goods",
+  "manifest_version": 2,
+  "description": "Display the highest price goods and lowest price goods on the current page",
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png"
+  },
+  "permissions": [
+    "tabs"
+  ],
+  "background": {
+    "scripts": [
+      "background.js"
+    ]
+  },
+  "browser_action": {},
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.baidu.com/*",
+        "http://127.0.0.1:8080/*",
+        "https://www.fashionnova.com/collections/new"
+      ],
+      "js": [
+        "js/inject.js"
+      ],
+      "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "https://www.baidu.com/*",
+        "http://127.0.0.1:8080/*",
+        "https://www.fashionnova.com/collections/new"
+      ],
+      "css": [
+        "static/css/main.28c773de.css"
+      ],
+      "js": [
+        "static/js/main.f3472417.js"
+      ]
+    }
+  ],
+  "web_accessible_resources": [
+    "js/define-postman.js"
+  ]
+}
