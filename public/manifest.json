@@ -2,23 +2,40 @@
   "version": "2",
   "short_name": "H/L price goods",
   "name": "Highest / Lowest price goods",
-  "manifest_version": 3,
+  "manifest_version": 2,
   "description": "Display the highest price goods and lowest price goods on the current page",
   "icons": {
     "16": "icon16.png",
     "48": "icon48.png"
   },
   "permissions": [
+    "tabs"
   ],
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "browser_action": {},
   "content_scripts": [
     {
-      "matches": ["*://*/*"],
+      "matches": [
+        "https://www.baidu.com/*",
+        "http://127.0.0.1:8080/*"
+      ],
+      "js": ["js/inject.js"],
+      "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "https://www.baidu.com/*",
+        "http://127.0.0.1:8080/*"
+      ],
       "css": [
-        "static/css/main.e6c13ad2.css"
+        "static/css/main.28c773de.css"
       ],
       "js": [
-        "static/js/main.7318a0a8.js"
+        "static/js/main.33897f21.js"
       ]
     }
-  ]
+  ],
+  "web_accessible_resources": ["js/define-postman.js"]
 }

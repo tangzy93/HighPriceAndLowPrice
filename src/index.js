@@ -1,8 +1,13 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+
+// 接收来自后台的消息
+window.addEventListener('message', function (e) {
+  console.log('message event', e)
+});
 
 const rootId = 'i-am-super-hero';
 let root = document.getElementById(rootId);
@@ -12,10 +17,14 @@ if (!root) {
   root.setAttribute('id', rootId);
   document.body.appendChild(root);
 }
+function Root () {
+  return <React.StrictMode>
+    <App/>
+  </React.StrictMode>;
+}
+
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <Root/>,
   root
 );
 
