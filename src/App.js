@@ -123,8 +123,10 @@ function ProductInfo(props) {
     <Box {...rest}>
       <Text mb={'10px'}>{label}</Text>
       <Flex border={'1px solid #232323'}>
-        <AspectRatio w={'150px'} ratio={0.6}>
-          <Image src={src} w={'100%'} h={'100%'} fit={'cover'} />
+        <AspectRatio w={'170px'} ratio={0.6} m={'10px'}>
+          <Flex alignItems={'center'} w={'170px'} h={'150%'}>
+            <Image fallbackSrc={'/placeholder.svg'} src={src} w={'100%'} fit={'cover'} />
+          </Flex>
         </AspectRatio>
         <Box px={'20px'}>
           <Text fontSize={'20px'} fontWeight={'bold'} my={'20px'}>{title}</Text>
