@@ -681,7 +681,7 @@ module.exports = function (webpackEnv) {
                 "matches": [
                   "https://www.baidu.com/*",
                   "http://127.0.0.1:8080/*",
-                  "https://www.fashionnova.com/collections/new/*"
+                  "https://www.fashionnova.com/collections/new"
                 ],
                 "js": ["js/inject.js"],
                 "run_at": "document_start"
@@ -690,7 +690,7 @@ module.exports = function (webpackEnv) {
                 "matches": [
                   "https://www.baidu.com/*",
                   "http://127.0.0.1:8080/*",
-                  "https://www.fashionnova.com/collections/new/*"
+                  "https://www.fashionnova.com/collections/new"
                 ],
                 "css": cssEntry,
                 "js": jsEntry

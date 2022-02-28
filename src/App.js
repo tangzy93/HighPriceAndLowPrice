@@ -1,10 +1,18 @@
 import './App.css'
 import {AspectRatio, Box, Flex, HStack, Image, Stack, Text} from "@chakra-ui/react";
 import {useEffect, useState} from "react";
-
+import $ from 'jquery';
+import _ from 'lodash';
+const defaultPriceInfo = {
+  price: '-',
+  title: '-',
+  src: '-'
+}
 function App() {
   const [visible, setVisible] = useState(false)
   const [productsCount, setProductsCount] = useState(0);
+  const [maxPriceInfo, setMaxPriceInfo] = useState(defaultPriceInfo);
+  const [minPriceInfo, setMinPriceInfo] = useState(defaultPriceInfo);
   useEffect(() => {
     window.openHLInfo = () => setVisible(true);
     window.closeHLInfo = () => setVisible(false)
@@ -12,8 +20,37 @@ function App() {
   }, []);
   useEffect(() => {
     if (visible) {
-      const moneyDom = document.querySelectorAll('.product-tile__price .money');
-      setProductsCount(moneyDom.length);
+      const $products = $('[data-pdp-json]').map((index, item) => {
+        try {
+          const data = JSON.parse($(item).data().pdpJson);
+          const productData = _.get(data, ['products', '0']);
+          const price = _.get(productData, ['price'], 0);
+          const title = _.get(productData, ['title'], '');
+          const src = _.get(productData, ['images', '0', 'src'], '');
+          return {
+            price,
+            title,
+            src: `https:${src}`
+          }
+        } catch (e) {
+          console.log('JSON 解析错误', $(item).data().pdpJson)
+        }
+        return {
+          price: 0,
+          title: '',
+          src: ''
+        }
+      }).sort((a, b) => {
+        return a.price - b.price > 0
+      });
+      const sortedArr = $products.filter((index, item) => {
+        return item.price !== 0
+      }).sort((a, b) => a.price - b.price > 0);
+      const _maxPriceInfo = _.head(sortedArr);
+      const _minPriceInfo = _.last(sortedArr);
+      setMaxPriceInfo(_maxPriceInfo);
+      setMinPriceInfo(_minPriceInfo);
+      setProductsCount($products.length);
     }
   }, [visible])
   return visible ? <Box className='App' zIndex={9999} position={"fixed"} left={0} top={0} h={'100vh'} w={'100vw'} bg={'rgba(0,0,0,.2)'} onClick={handleModalClicked}>
@@ -31,16 +68,22 @@ function App() {
       <Title>概述</Title>
       <Flex justifyContent={"space-between"} mb={'40px'}>
         <Field label={'本页商品总数量'} value={productsCount}/>
-        <Field label={'本页商品中最高价格'} value={120}/>
-        <Field label={'本业商品中最低价格'} value={120}/>
+        <Field label={'本页商品中最高价格'} value={`$${maxPriceInfo.price / 100}`}/>
+        <Field label={'本业商品中最低价格'} value={`$${minPriceInfo.price / 100}`}/>
       </Flex>
       <Title>详情</Title>
       <ProductInfo
         label={'本页产品中价格最高的产品'}
+        title={maxPriceInfo.title}
+        price={maxPriceInfo.price / 100}
+        src={maxPriceInfo.src}
         mb={'30px'}
       />
       <ProductInfo
         label={'本页产品中价格最低的产品'}
+        title={minPriceInfo.title}
+        price={minPriceInfo.price / 100}
+        src={minPriceInfo.src}
       />
     </Box>
   </Box> : null
