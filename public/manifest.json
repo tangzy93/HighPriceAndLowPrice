@@ -19,7 +19,8 @@
     {
       "matches": [
         "https://www.baidu.com/*",
-        "http://127.0.0.1:8080/*"
+        "http://127.0.0.1:8080/*",
+        "https://www.fashionnova.com/collections/new/*"
       ],
       "js": ["js/inject.js"],
       "run_at": "document_start"
@@ -27,7 +28,8 @@
     {
       "matches": [
         "https://www.baidu.com/*",
-        "http://127.0.0.1:8080/*"
+        "http://127.0.0.1:8080/*",
+        "https://www.fashionnova.com/collections/new/*"
       ],
       "css": [
         "static/css/main.28c773de.css"

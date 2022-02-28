@@ -4,11 +4,18 @@ import {useEffect, useState} from "react";
 
 function App() {
   const [visible, setVisible] = useState(false)
+  const [productsCount, setProductsCount] = useState(0);
   useEffect(() => {
     window.openHLInfo = () => setVisible(true);
     window.closeHLInfo = () => setVisible(false)
     window.toggleHLInfo = () => setVisible(prev => !prev);
   }, []);
+  useEffect(() => {
+    if (visible) {
+      const moneyDom = document.querySelectorAll('.money');
+      setProductsCount(moneyDom.length);
+    }
+  }, [visible])
   return visible ? <Box className='App' zIndex={9999} position={"fixed"} left={0} top={0} h={'100vh'} w={'100vw'} bg={'rgba(0,0,0,.2)'} onClick={handleModalClicked}>
     <Box
       onClick={(e) => e.stopPropagation()}
@@ -23,7 +30,7 @@ function App() {
     >
       <Title>概述</Title>
       <Flex justifyContent={"space-between"} mb={'40px'}>
-        <Field label={'本页商品总数量'} value={120}/>
+        <Field label={'本页商品总数量'} value={productsCount}/>
         <Field label={'本页商品中最高价格'} value={120}/>
         <Field label={'本业商品中最低价格'} value={120}/>
       </Flex>
